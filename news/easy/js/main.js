@@ -38,6 +38,10 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton',
   'ojs/ojlistview', 'ojs/ojarraytabledatasource'],
     function (oj, ko, $) {
 
+      function makeNewsDataUrl(lang, date, id) {
+        return 'https://newswebeasy.github.io/' + lang + '/news/easy/data/' + date.replace(/-/g, '/') + '/' + id + '.json';
+      }
+      
       function ViewModel() {
         var self = this;
 
@@ -55,8 +59,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton',
           return 'http://www3.nhk.or.jp/news/easy/' + id + '/' + id + '.html';
         });
 
-        var url = 'https://newswebeasy.github.io/zh-CN/news/easy/data/' + date.replace(/-/g, '/') + '/' + id + '.json';
-        var jqXHR = $.getJSON(url);
+        var jqXHR = $.getJSON(makeNewsDataUrl('zh-CN', date, id));
         jqXHR.fail(
             function (xhr, message, error)
             {
@@ -69,6 +72,8 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton',
               self.content(data.content);
               self.translator(data.translator || 'Google');
               self.ready(true);
+
+              adjustContentPadding();
             }
         );
       }
@@ -84,14 +89,11 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton',
         if (bottomElem) {
           contentElem.style.paddingBottom = bottomElem.clientHeight + 'px';
         }
-        // Add oj-complete marker class to signal that the content area can be unhidden.
-        // See the CSS demo tab to see when the content area is hidden.
+
         contentElem.classList.add('oj-complete');
       }
 
       $(document).ready(function () {
         ko.applyBindings(new ViewModel(), document.getElementById('page'));
-
-        adjustContentPadding();
       });
     });
