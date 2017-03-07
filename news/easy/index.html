@@ -40,10 +40,12 @@
             <div class="oj-panel">
               <p>摘要: <span data-bind="text: outline"></span></p>
             </div>
-            <p data-bind="text: content"></p>
+            <p class="oj-hybrid-padding" data-bind="text: content"></p>
             <p></p>
-            <p class="oj-text-sm oj-text-primary-color">由 <span data-bind="text: translator"></span> 翻译</p>
-            <p class="oj-text-sm oj-text-secondary-color">原文链接: <a data-bind="attr: {href: source}, text: source"></a></p>
+            <div class="oj-hybrid-padding">
+              <p class="oj-text-sm oj-text-primary-color">由 <span data-bind="text: translator"></span> 翻译</p>
+              <p class="oj-text-sm oj-text-secondary-color">原文链接: <a data-bind="attr: {href: source}, text: source"></a></p>
+            </div>
           </div>
         </div>
       </div>
