@@ -50,7 +50,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmodule', '
           self.contentModule = ko.observable('error');
           return;
         }
-        
+
         var p = hash.split(':');
         var date = p[0].substr(1);
         var id = p[1];
@@ -63,8 +63,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmodule', '
 
         var jqXHR = $.getJSON(makeNewsDataUrl('zh-CN', date, id));
         jqXHR.fail(
-            function (xhr, message, error)
-            {
+            function (xhr, message, error) {
               // show error message
               self.contentModule('error');
             }
@@ -78,7 +77,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmodule', '
                     content: data.content,
                     translator: data.translator
                   };
-                  
+
                   model.source = ko.pureComputed(function () {
                     return 'http://www3.nhk.or.jp/news/easy/' + id + '/' + id + '.html';
                   });
