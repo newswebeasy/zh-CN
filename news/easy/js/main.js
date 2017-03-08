@@ -75,7 +75,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmodule', '
                     title: data.title,
                     outline: data.outline,
                     content: data.content,
-                    translator: data.translator
+                    translator: data.translator || 'Google'
                   };
 
                   model.source = ko.pureComputed(function () {
