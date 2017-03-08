@@ -45,7 +45,13 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmodule', '
       function ViewModel() {
         var self = this;
 
-        var p = location.hash.split(':');
+        var hash = location.hash;
+        if (!hash) {
+          self.contentModule = ko.observable('error');
+          return;
+        }
+        
+        var p = hash.split(':');
         var date = p[0].substr(1);
         var id = p[1];
 
