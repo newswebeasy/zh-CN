@@ -13,7 +13,3 @@ a:hover {
 p {
   margin: 0px;
 }
-
-.oj-applayout-content:not(.oj-complete) {
-  visibility: hidden;
-}

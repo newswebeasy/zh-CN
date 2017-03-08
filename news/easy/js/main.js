@@ -34,14 +34,14 @@ requirejs.config({
     }
 );
 
-require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton',
-  'ojs/ojlistview', 'ojs/ojarraytabledatasource'],
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmodule', 'ojs/ojbutton',
+  'ojs/ojlistview', 'ojs/ojarraytabledatasource', 'promise'],
     function (oj, ko, $) {
 
       function makeNewsDataUrl(lang, date, id) {
         return 'https://newswebeasy.github.io/' + lang + '/news/easy/data/' + date.replace(/-/g, '/') + '/' + id + '.json';
       }
-      
+
       function ViewModel() {
         var self = this;
 
@@ -49,11 +49,7 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton',
         var date = p[0].substr(1);
         var id = p[1];
 
-        self.title = ko.observableArray();
-        self.outline = ko.observable();
-        self.content = ko.observable();
-        self.translator = ko.observable();
-        self.ready = ko.observable(false);
+        self.contentModule = ko.observable('waiting');
 
         self.source = ko.pureComputed(function () {
           return 'http://www3.nhk.or.jp/news/easy/' + id + '/' + id + '.html';
@@ -63,34 +59,35 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton',
         jqXHR.fail(
             function (xhr, message, error)
             {
-              oj.Logger.error(error);
+              // show error message
+              self.contentModule('error');
             }
         ).then(
             function (data) {
-              self.title(data.title);
-              self.outline(data.outline);
-              self.content(data.content);
-              self.translator(data.translator || 'Google');
-              self.ready(true);
+              var modelFactory = {
+                createViewModel: function (params, valueAccessor) {
+                  var model = {
+                    title: data.title,
+                    outline: data.outline,
+                    content: data.content,
+                    translator: data.translator
+                  };
+                  
+                  model.source = ko.pureComputed(function () {
+                    return 'http://www3.nhk.or.jp/news/easy/' + id + '/' + id + '.html';
+                  });
 
-              adjustContentPadding();
+                  return Promise.resolve(model);
+                }
+              };
+
+              self.contentModule({
+                viewName: 'news',
+                viewModelFactory: modelFactory
+              });
             }
         );
-      }
 
-      function adjustContentPadding() {
-        var topElem = document.getElementsByClassName('oj-applayout-fixed-top')[0];
-        var contentElem = document.getElementsByClassName('oj-applayout-content')[0];
-        var bottomElem = document.getElementsByClassName('oj-applayout-fixed-bottom')[0];
-
-        if (topElem) {
-          contentElem.style.paddingTop = topElem.offsetHeight + 'px';
-        }
-        if (bottomElem) {
-          contentElem.style.paddingBottom = bottomElem.clientHeight + 'px';
-        }
-
-        contentElem.classList.add('oj-complete');
       }
 
       $(document).ready(function () {

@@ -17,18 +17,7 @@
   <body class="oj-hybrid">
     <div id="page" class="oj-hybrid-applayout-page">
       <!-- Content -->
-      <div class="oj-applayout-content">
-        <div role="main" class="oj-hybrid-applayout-content">
-          <div class="oj-hybrid-padding">
-            <h3 data-bind="text: title"></h3>
-            <div class="oj-panel">
-              <p>摘要: <span data-bind="text: outline"></span></p>
-            </div>
-            <p class="oj-hybrid-padding-top oj-hybrid-padding-bottom" data-bind="text: content"></p>
-            <p></p>
-            <p class="oj-text-sm oj-text-primary-color">由 <span data-bind="text: translator"></span> 翻译 <a data-bind="attr: {href: source}">查看原文</a></p>
-          </div>
-        </div>
+      <div class="oj-applayout-content" data-bind="ojModule: contentModule">
       </div>
     </div>
 
