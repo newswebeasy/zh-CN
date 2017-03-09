@@ -71,10 +71,13 @@ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmodule', '
             function (data) {
               var modelFactory = {
                 createViewModel: function (params, valueAccessor) {
+                  var content = data.content;
+                  var lines = content.split('\n');
+                  content = '<p>' + lines.join('</p><p>') + '</p>';
                   var model = {
                     title: data.title,
                     outline: data.outline,
-                    content: data.content,
+                    content: content,
                     translator: data.translator || 'Google'
                   };
 
